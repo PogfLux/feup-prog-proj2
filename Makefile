@@ -8,14 +8,15 @@
 SRC := ./src
 OBJ := ./build
 BIN := ./bin
-EXECUTABLE_NAME := robo-maze
+EXECUTABLE_NAME := robots-game
+SOURCE_FILE_EXTENSION := cpp
 
 # compiler
-CC := g++
+CC := g++\
 
 # source file and object file names
-SOURCES := $(wildcard $(SRC)/*.cpp)
-OBJECTS := $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
+SOURCES := $(wildcard $(SRC)/*.$(SOURCE_FILE_EXTENSION))
+OBJECTS := $(patsubst $(SRC)/%.$(SOURCE_FILE_EXTENSION), $(OBJ)/%.o, $(SOURCES))
 
 # compiles the executable and creates the directories if needed
 all: makeBin makeBuild $(BIN)/$(EXECUTABLE_NAME)
@@ -27,7 +28,7 @@ $(BIN)/$(EXECUTABLE_NAME): $(OBJECTS)
 # compiles every source file into its respective object file
 # $@ = name of rule/recipe target
 # $< = name of first dependency of this recipe
-$(OBJ)/%.o: $(SRC)/%.cpp
+$(OBJ)/%.o: $(SRC)/%.$(SOURCE_FILE_EXTENSION)
 	$(CC) -c $< -o $@
 
 # create the build folder if it doesn't already exist
@@ -37,6 +38,9 @@ makeBuild:
 # create the bin folder if it doesn't already exist
 makeBin:
 	mkdir -p $(BIN)/
+
+run: all
+	$(BIN)/$(EXECUTABLE_NAME)
 
 # remove the build folder
 clean:
