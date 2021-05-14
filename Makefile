@@ -5,9 +5,9 @@
 # ty baltaboss <3
 
 # source folder, object files folder and executable folder
-SRC := .
-OBJ := .
-BIN := .
+SRC := ./src
+OBJ := ./build
+BIN := ./bin
 EXECUTABLE_NAME := robo-maze
 
 # compiler
