@@ -6,11 +6,32 @@ struct Position {
 };
 
 class Robot {
-    Robot(Position pos, int id, bool isAlive);
+    public:
+        Robot(Position pos, bool isAlive);
+        void die();
+        void move(Position newPos);
+        int getRobotID() const; 
+        Position getPosition() const;
+        bool isAlive() const;
 
+
+    private:
+        Position pos;
+        int id;
+        bool isAlive;
+        int setRobotID();
 };
 
 class Player {
-    Player(Position pos, bool isAlive);
+    public:
+        Player(Position pos, bool isAlive);
+        void die();
+        void move(Position newPos);
+        Position getPosition() const;
+        bool isAlive() const;
 
+
+    private:
+        Position pos;
+        bool isAlive;
 };

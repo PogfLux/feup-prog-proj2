@@ -15,7 +15,10 @@ class Maze {
 class Post {
     
     public:
-        Post(Position pos, bool isElectric);   
+        Post(Position pos, bool isElectric);
+        void setElectric(bool newState);
+        Position getPosition() const;
+        bool isElectric() const;
 
     private:
         Position pos;
