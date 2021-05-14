@@ -1,19 +1,16 @@
 #pragma once
 
-struct Position
-{
+struct Position {
 
     int x, y;
 };
 
-class Robot
-{
+class Robot {
     Robot(Position pos, int id, bool isAlive);
 
 };
 
-class Player
-{
+class Player {
     Player(Position pos, bool isAlive);
 
 };
