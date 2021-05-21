@@ -1,37 +1,45 @@
 #pragma once
 
 struct Position {
-
     int x, y;
 };
 
+inline bool operator==(const Position& lhs, const Position& rhs);
+
 class Robot {
+    
     public:
-        Robot(Position pos, bool isAlive);
+        Robot(Position pos, bool alive);
         void die();
-        void move(Position newPos);
+        void move(const Position& newPos);
         int getRobotID() const; 
         Position getPosition() const;
         bool isAlive() const;
-
+        inline bool operator==(const Robot& other) const;
 
     private:
-        Position pos;
-        int id;
-        bool isAlive;
-        int setRobotID();
+        enum DEAD_STATE {
+            STUCK,
+            DEAD
+        };
+
+        Position _pos;
+        int _id;
+        DEAD_STATE _deadState;
+        bool _alive;
+        static inline int setRobotID();
 };
 
 class Player {
+
     public:
-        Player(Position pos, bool isAlive);
+        Player(Position pos, bool alive);
         void die();
-        void move(Position newPos);
+        void move(const Position& newPos);
         Position getPosition() const;
         bool isAlive() const;
 
-
     private:
-        Position pos;
-        bool isAlive;
+        Position _pos;
+        bool _alive;
 };
