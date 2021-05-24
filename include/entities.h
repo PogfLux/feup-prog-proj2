@@ -9,6 +9,7 @@ inline bool operator==(const Position& lhs, const Position& rhs);
 class Robot {
     
     public:
+        Robot();
         Robot(Position pos, bool alive);
         void die();
         void move(const Position& newPos);
@@ -33,6 +34,7 @@ class Robot {
 class Player {
 
     public:
+        Player();
         Player(Position pos, bool alive);
         void die();
         void move(const Position& newPos);

@@ -6,6 +6,7 @@
 class Post {
     
     public:
+        Post();
         Post(Position pos, bool electric);
         void setElectric(bool newState);
         Position getPosition() const;
@@ -20,6 +21,7 @@ class Post {
 class Maze {
 
     public:
+        Maze();
         Maze(std::vector<Post> fences);
 
     private:
@@ -29,7 +31,7 @@ class Maze {
 class Game {
     
     public:
-        Game(Player player, Maze maze, std::vector<Robot> robots);
+        Game();
         Player getPlayer() const;
         Maze getMaze() const;
         std::vector<Robot> getRobots() const;
