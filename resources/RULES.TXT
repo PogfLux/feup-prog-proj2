@@ -1,0 +1,15 @@
+This is a robot maze game.
+
+Your goal is to flee from the robots that exist in the labirinth until they die or to exit the maze.
+Beware of electric fences and posts, you will get electrocuted if you touch them. So, you know... don't.
+There are also non-electric posts which you can't crash into, but can be used to get robots stuck.
+Each time you make a move, the robots also move, and they will always move towards you in the direction of the shortest path.
+Use the:
+-AWDX keys to move vertically and horizontally.
+-QECZ keys to move diagonally.
+-S key to stay in place.
+
+If you get captured by one of the robots or touch the fences/posts, you lose.
+If you escape the maze, or the robots all die without you being captured, you win.
+Robots that collide with each other get destroyed/stuck, obstructing a cell that you can't move into.
+With that said, good luck.
