@@ -8,4 +8,4 @@ inline void clearScreen();
 
 inline void clearInput();
 
-inline void waitForEnter();
+inline void waitForEnter(std::string prompt);

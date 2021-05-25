@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "../include/utils.h"
 
@@ -6,7 +7,7 @@ inline void clearScreen() {std::cout << std::string(500, '\n') << std::endl;};
 
 inline void clearInput() {std::cin.clear(); std::cin.ignore(MAX_CHARS_IGNORE, '\n');};
 
-inline void waitForEnter() {
-    std::cout << "Press ENTER to continue..." << std::endl;
+inline void waitForEnter(std::string prompt = "Press ENTER to continue...") {
+    std::cout << prompt << std::endl;
     if (std::cin.peek() == '\n') std::cin.ignore(MAX_CHARS_IGNORE, '\n');
 }
