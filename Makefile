@@ -12,7 +12,7 @@ EXECUTABLE_NAME := robots-game
 SOURCE_FILE_EXTENSION := cpp
 
 # compiler
-CC := g++\
+CC := g++
 
 # source file and object file names
 SOURCES := $(wildcard $(SRC)/*.$(SOURCE_FILE_EXTENSION))
@@ -29,7 +29,7 @@ $(BIN)/$(EXECUTABLE_NAME): $(OBJECTS)
 # $@ = name of rule/recipe target
 # $< = name of first dependency of this recipe
 $(OBJ)/%.o: $(SRC)/%.$(SOURCE_FILE_EXTENSION)
-	$(CC) -c $< -o $@
+	$(CC) -w -c $< -o $@
 
 # create the build folder if it doesn't already exist
 makeBuild:

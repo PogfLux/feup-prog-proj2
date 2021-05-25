@@ -4,24 +4,14 @@
 #include <sstream>
 #include <fstream>
 #include <chrono>
-#include <limits>
 #include <algorithm>
 #include <cmath>
 
-#include "../include/utils.h"
+#include "./utils.cpp" //linking errors when including utils.h temporarily fixed by including the .cpp file instead
 #include "../include/main.h"
 #include "../include/game.h"
 #include "../include/leaderboard.h"
 #include "../include/files.h"
-
-inline void clearScreen() {std::cout << std::string(500, '\n') << std::endl;};
-
-inline void clearInput() {std::cin.clear(); std::cin.ignore(MAX_CHARS_IGNORE, '\n');};
-
-inline void waitForEnter() {
-    std::cout << "Press ENTER to continue..." << std::endl;
-    if (std::cin.peek() == '\n') std::cin.ignore(MAX_CHARS_IGNORE, '\n');
-}
 
 enum GameMenuOption {
     EXIT, RULES, PLAY, LEADERBOARD
