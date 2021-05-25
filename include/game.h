@@ -1,7 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <string>
+
 #include "./entities.h"
+
+#define MAZE_FILE_NAME(mazeNumber) std::string("MAZE_") + ((mazeNumber < 10) ? "0" : "") + std::to_string(mazeNumber) + ".TXT"
 
 class Post {
     
@@ -15,17 +19,19 @@ class Post {
     private:
         Position _pos;
         bool _electric;
-
+        char _fenceType;
 };
 
 class Maze {
 
     public:
         Maze();
-        Maze(std::vector<Post> fences);
+        Maze(int numCols, int numRows);
 
     private:
-        std::vector<Post> _fences;
+        std::vector<Post> _posts;
+        int _numCols;
+        int _numRows;
 };
 
 class Game {
@@ -34,11 +40,17 @@ class Game {
         Game();
         Player getPlayer() const;
         Maze getMaze() const;
+        bool over() const;
+        std::string pickMaze();
+        bool mazePicked() const;
+        void createMaze(std::string& mazeFileName) const;
         std::vector<Robot> getRobots() const;
 
     private:
         Player _player;
         Maze _maze;
         std::vector<Robot> _robots;
+        bool _gameOver;
+        bool _mazePicked;
         
 };
