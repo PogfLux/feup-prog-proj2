@@ -10,7 +10,7 @@ int Leaderboard::pickLeaderboard() {
     unsigned int mazeNumber;
 
     while (true){
-        std::cout << "Which maze's leaderboard do you want to see? (maze numbers range from 1 to 99)\n\n-> ";
+        std::cout << "Which maze's leaderboard do you want to see? (maze numbers range from 1 to 99, 0 to go back to the previous menu)\n\n-> ";
         if (!(std::cin >> mazeNumber) || std::cin.peek() != '\n') {
 
             clearScreen();
@@ -22,7 +22,9 @@ int Leaderboard::pickLeaderboard() {
 
         clearInput();
 
-        if (mazeNumber == 0 || mazeNumber > 99) {
+        if (mazeNumber == 0){
+            break; // go back
+        } else if (mazeNumber > 99) { // we only need to check if the input is greater because we declared the var as 'unsigned'
             clearScreen();
             std::cout << "Not a valid maze number. \n\n";
             continue;
@@ -36,14 +38,22 @@ int Leaderboard::pickLeaderboard() {
         
         return mazeNumber;
     }
+
+    return 0; // returning 0 (not a valid maze number) signals that we wish to go back to the menu
 };
 
 void Leaderboard::showLeaderboard(const int& mazeNumber) {
     
+    clearScreen();
+
     std::vector<std::string> rules = FileManager::readFileLines(LEADERBOARD_FILE_NAME(mazeNumber), LEADERBOARDS_PATH);
+
+    std::cout << "Maze: " << mazeNumber << '\n' << std::endl;
 
     for (auto line : rules) {
         std::cout << line << "\n";
     }
+
+    std::cout << std::endl;
 
 };
