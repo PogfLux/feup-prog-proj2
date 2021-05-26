@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "./utils.cpp" //linking errors when including utils.h temporarily fixed by including the .cpp file instead
+#include "../include/utils.h"
 #include "../include/main.h"
 #include "../include/game.h"
 #include "../include/leaderboard.h"
@@ -61,8 +61,7 @@ int chooseMenuOption() {
             return response;
 
         default:
-            clearScreen();
-            std::cout << "\nInvalid option, please input a valid option out of the list.\n" << std::endl;
+            return -1; // erroneous response
     };
 }
 
@@ -109,6 +108,10 @@ int main() {
                 break;
             case EXIT:
                 exit(0); // call exit directly
+
+            default:
+                clearScreen();
+                std::cout << "\nInvalid option, please input a valid option out of the list.\n" << std::endl;      
         };
 
     } while (!game.mazePicked());

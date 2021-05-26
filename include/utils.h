@@ -4,8 +4,8 @@
 
 #define MAX_CHARS_IGNORE std::numeric_limits <std::streamsize>::max()
 
-inline void clearScreen();
+void clearScreen();
 
-inline void clearInput();
+void clearInput();
 
-inline void waitForEnter(std::string prompt);
+void waitForEnter(std::string prompt = "Press ENTER to continue...");

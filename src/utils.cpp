@@ -3,11 +3,11 @@
 
 #include "../include/utils.h"
 
-inline void clearScreen() {std::cout << std::string(500, '\n') << std::endl;};
+void clearScreen() {std::cout << std::string(500, '\n') << std::endl;};
 
-inline void clearInput() {std::cin.clear(); std::cin.ignore(MAX_CHARS_IGNORE, '\n');};
+void clearInput() {std::cin.clear(); std::cin.ignore(MAX_CHARS_IGNORE, '\n');};
 
-inline void waitForEnter(std::string prompt = "Press ENTER to continue...") {
+void waitForEnter(std::string prompt) {
     std::cout << prompt << std::endl;
     if (std::cin.peek() == '\n') std::cin.ignore(MAX_CHARS_IGNORE, '\n');
 }
