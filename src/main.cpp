@@ -80,7 +80,7 @@ int main() {
 
     Game game;
 
-    std::string mazeName;
+    int mazeNumber;
 
     clearScreen();
     std::cout << "Robot Maze" << "\n\n";
@@ -92,20 +92,26 @@ int main() {
             case RULES:
                 showRules();
                 break;
+
             case LEADERBOARD: {
                 clearScreen();
+
                 int mazeNumber = Leaderboard::pickLeaderboard();
                 if (mazeNumber != 0) {
                     Leaderboard::showLeaderboard(mazeNumber);
                     waitForEnter("Press ENTER to return to main menu...");
                 }
+
                 clearScreen();
+                
                 break;
             }
+
             case PLAY:
                 clearScreen();
-                mazeName = game.pickMaze();
+                mazeNumber = game.pickMaze();
                 break;
+
             case EXIT:
                 exit(0); // call exit directly
 
@@ -118,9 +124,12 @@ int main() {
 
     // we only reach this point in the code if we actually picked a maze, so it's safe to parse the maze file
 
-    game.createMaze(mazeName);
+    game.createMaze(mazeNumber);
 
     while(!game.over()) {
+
+        char playerMove = game.pollPlayerMovement();
+
 
     }
 
