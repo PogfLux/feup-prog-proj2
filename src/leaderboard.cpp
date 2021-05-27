@@ -109,7 +109,7 @@ void Leaderboard::readLeaderboardFromFile(const std::string &fileName)
         while (ss.peek() == ' ')
             ss.ignore(1, ' '); // try to clear as many blank spaces as possible
 
-        if (ss.peek() != -1){
+        if (ss.peek() != EOF){
             ss >> tmp;
             name += (' ' + tmp);
         }
@@ -125,7 +125,7 @@ void Leaderboard::writeLeaderboardToFile(const std::string &fileName) {
     file.open(std::string(RESOURCES_PATH) + LEADERBOARDS_PATH + fileName);
 
     file << "Player";
-    file << std::string(16 - std::string("Player").length(), ' ');
+    file << std::string(MAX_PLAYER_NAME_LENGTH - std::string("Player").length(), ' ');
     file << "- Time";
     file << '\n';
 
@@ -133,8 +133,8 @@ void Leaderboard::writeLeaderboardToFile(const std::string &fileName) {
 
     for (auto entry : Leaderboard::leaderboardEntries) {
         file << entry.playerName;
-        file << std::string(16 - getPlayerNameLength(entry.playerName), ' ');
-        file << "- ";
+        file << std::string(MAX_PLAYER_NAME_LENGTH - getPlayerNameLength(entry.playerName), ' ');
+        file << " - ";
 
         int numDigitsInScore = (entry.score <= 0) ? 0 : floor(log10(entry.score)) + 1;
 
