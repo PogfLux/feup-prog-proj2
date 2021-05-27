@@ -505,12 +505,12 @@ void Game::moveRobots() {
 }
 
 
-void Game::checkGameStatus() {
+void Game::movePlayer(Position newPos) {
     
     for (const auto& exit : this->getMaze().getExits()){
 
-        if (exit == this->getPlayer().getPosition()){
-
+        if (exit == newPos){
+            this->getPlayer().move(newPos);
             this->_gameOver = true;
             return;
         }
@@ -520,7 +520,7 @@ void Game::checkGameStatus() {
 
         if (!post.isElectric()) continue;
 
-        if (post.getPosition() == this->getPlayer().getPosition()) {
+        if (post.getPosition() == newPos) {
             this->getPlayer().die();
             this->_gameOver = true;
             return;
@@ -528,14 +528,18 @@ void Game::checkGameStatus() {
 
     }
 
-    if (this->_aliveRobots == 0) this->_gameOver = true;
-    else {
+    if (this->_aliveRobots == 0) {
+        this->_gameOver = true;
+        return;
+     } else {
         for (const auto& robot : this->getRobots()) {
-            if (robot.getPosition() == this->getPlayer().getPosition()) {
+            if (robot.getPosition() == newPos) {
                 this->getPlayer().die();
                 this->_gameOver = true;
                 return;
             }
         }
     }
+
+    this->getPlayer().move(newPos);
 }

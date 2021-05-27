@@ -67,6 +67,7 @@ class Game {
         void moveRobots();
         Position getRobotMove(const Robot& robot);
         void checkGameStatus();
+        void movePlayer(Position newPos);
         int getAliveRobotsNum();
 
     private:

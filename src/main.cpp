@@ -144,14 +144,17 @@ int main() {
             std::cout << "Invalid move, input another move.\n";
 
         } else {
-            
-            game.getPlayer().move(newPlayerPos);
-            game.checkGameStatus();
-            if(!game.over())
+            game.movePlayer(newPlayerPos);
+            //game.getPlayer().move(newPlayerPos);
+            //game.checkGameStatus();
+            if(!game.over()) // the player could have killed himself, in which case the game should be over right away
                 game.moveRobots();
                 clearScreen();
         }
     }
+
+    game.getEntityPositionsInBoard(); // we need to call this to update the internal representation of the board
+    game.printBoard();
 
     if (game.getAliveRobotsNum() == 0 || game.getPlayer().isAlive()) { // game won 
                             std::cout << "bruhs" << std::endl;

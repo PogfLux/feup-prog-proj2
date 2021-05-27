@@ -48,7 +48,7 @@ void Leaderboard::showLeaderboard(const int& mazeNumber) {
 
     std::vector<std::string> rules = FileManager::readFileLines(LEADERBOARD_FILE_NAME(mazeNumber), LEADERBOARDS_PATH);
 
-    std::cout << "Maze: " << mazeNumber << '\n' << std::endl;
+    std::cout << "Maze: " << (mazeNumber < 10 ? "0" : "") << mazeNumber << '\n' << std::endl;
 
     for (auto line : rules) {
         std::cout << line << "\n";
