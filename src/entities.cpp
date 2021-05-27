@@ -12,10 +12,6 @@
 
 #include "../include/entities.h"
 
-inline bool operator==(const Position& lhs, const Position& rhs) {
-    return lhs.x == rhs.x && lhs.y == rhs.y;
-}
-
 Robot::Robot() { };
 
 Robot::Robot(Position pos, bool alive) : _pos(pos), _alive(alive) { 
@@ -27,6 +23,12 @@ inline int Robot::setRobotID() {
 
     return id++;
 };
+
+void Robot::setState(DEAD_STATE newState) { this->_deadState = newState; };
+
+bool Robot::operator==(const Robot& robot) const {
+    return this->_id == robot._id;
+}
 
 void Robot::die() {
     this->_alive = false;

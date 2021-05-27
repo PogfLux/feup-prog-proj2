@@ -32,8 +32,14 @@ class Maze {
         void addPost(Post p);
         void addExit(Exit c);
         int getMazeNumber() const;
+        int getNumRows() const;
+        int getNumCols() const;
+        std::vector<Exit> getExits() const;
+        std::vector<Post> getPosts() const;
+        bool collidesWithNonElectricPost(Position pos) const;
 
     private:
+
         std::vector<Post> _posts;
         int _mazeNumber;
         int _numCols;
@@ -45,22 +51,33 @@ class Game {
     
     public:
         Game();
-        Player getPlayer() const;
+        Player& getPlayer();
         Maze getMaze() const;
         bool over() const;
         int pickMaze();
         bool mazePicked() const;
         void createMaze(int mazeNumber);
-        std::vector<Robot> getRobots() const;
+        std::vector<Robot>& getRobots();
         char pollPlayerMovement();
+        void getEntityPositionsInBoard();
+        void printBoard();
+        void setMaze(Maze maze);
+        bool isValidPlayerPosition(const Position& newPos);
+        Position getNewPlayerPosition(char playerMove);
+        void moveRobots();
+        Position getRobotMove(const Robot& robot);
+        void checkGameStatus();
+        int getAliveRobotsNum();
 
     private:
         Player _player;
         Maze _maze;
         std::vector<Robot> _robots;
+        int _aliveRobots;
         bool _gameOver;
         bool _mazePicked;
-        
+        std::vector<char> _boardChars; // use this to store the chars when printing the board
+
         // define as 'static const' as to create it only once, and not modify it after creation.
         static const std::vector<char> validMoves; 
         

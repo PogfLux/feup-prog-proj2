@@ -29,7 +29,7 @@ $(BIN)/$(EXECUTABLE_NAME): $(OBJECTS)
 # $@ = name of rule/recipe target
 # $< = name of first dependency of this recipe
 $(OBJ)/%.o: $(SRC)/%.$(SOURCE_FILE_EXTENSION)
-	$(CC) -w -c $< -o $@
+	$(CC) -c $< -o $@
 
 # create the build folder if it doesn't already exist
 makeBuild:

@@ -4,11 +4,18 @@ struct Position {
     int x, y;
 };
 
-inline bool operator==(const Position& lhs, const Position& rhs);
+inline bool operator==(const Position& lhs, const Position& rhs) {
+    return lhs.x == rhs.x && lhs.y == rhs.y;
+};
 
 class Robot {
     
     public:
+        enum DEAD_STATE {
+            STUCK,
+            DEAD
+        };
+        
         Robot();
         Robot(Position pos, bool alive);
         void die();
@@ -16,13 +23,10 @@ class Robot {
         int getRobotID() const; 
         Position getPosition() const;
         bool isAlive() const;
-        inline bool operator==(const Robot& other) const;
+        bool operator==(const Robot& other) const;
+        void setState(DEAD_STATE newState);
 
     private:
-        enum DEAD_STATE {
-            STUCK,
-            DEAD
-        };
 
         Position _pos;
         int _id;

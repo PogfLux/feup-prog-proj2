@@ -43,6 +43,7 @@ int chooseMenuOption() {
         if (!(std::cin >> response) || std::cin.peek() != '\n') { // input is not a number
             clearInput();
             clearScreen();
+            response = -1;
             std::cout << "\nPlease input a number.\n" << std::endl;
             continue;
         }
@@ -126,11 +127,36 @@ int main() {
 
     game.createMaze(mazeNumber);
 
-    while(!game.over()) {
+    clearScreen();
+
+    while (!game.over()) {
+
+        game.getEntityPositionsInBoard();
+        game.printBoard();
 
         char playerMove = game.pollPlayerMovement();
 
+        Position newPlayerPos = game.getNewPlayerPosition(playerMove);
 
+        if (!game.isValidPlayerPosition(newPlayerPos)) {
+
+            clearScreen();
+            std::cout << "Invalid move, input another move.\n";
+
+        } else {
+            
+            game.getPlayer().move(newPlayerPos);
+            game.checkGameStatus();
+            if(!game.over())
+                game.moveRobots();
+                clearScreen();
+        }
+    }
+
+    if (game.getAliveRobotsNum() == 0 || game.getPlayer().isAlive()) { // game won 
+                            std::cout << "bruhs" << std::endl;
+    } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
+                        std::cout << "bruh" << std::endl;
     }
 
     return 0;
