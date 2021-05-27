@@ -129,6 +129,8 @@ int main() {
 
     clearScreen();
 
+    auto start = std::chrono::high_resolution_clock::now();
+
     while (!game.over()) {
 
         game.getEntityPositionsInBoard();
@@ -145,21 +147,27 @@ int main() {
 
         } else {
             game.movePlayer(newPlayerPos);
-            //game.getPlayer().move(newPlayerPos);
-            //game.checkGameStatus();
             if(!game.over()) // the player could have killed himself, in which case the game should be over right away
                 game.moveRobots();
                 clearScreen();
         }
     }
 
+    auto end = std::chrono::high_resolution_clock::now();
+
+    auto time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+
     game.getEntityPositionsInBoard(); // we need to call this to update the internal representation of the board
     game.printBoard();
 
     if (game.getAliveRobotsNum() == 0 || game.getPlayer().isAlive()) { // game won 
-                            std::cout << "bruhs" << std::endl;
+    
+        //Leaderboard::
+    
+    
+    
     } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
-                        std::cout << "bruh" << std::endl;
+        std::cout << "Oh no, looks like you have lost, try again next time." << std::endl;
     }
 
     return 0;

@@ -57,3 +57,17 @@ void Leaderboard::showLeaderboard(const int& mazeNumber) {
     std::cout << std::endl;
 
 };
+
+void Leaderboard::addEntryToLeaderboard(Node newEntry) {
+    Leaderboard::leaderboardEntries.push_back(newEntry);
+};
+
+void Leaderboard::readLeaderboardFromFile(const std::string& fileName) {
+
+};
+
+void Leaderboard::writeLeaderboardToFile(const std::string& fileName) {
+    
+};
+
+

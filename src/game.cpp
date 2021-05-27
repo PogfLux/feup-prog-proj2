@@ -78,7 +78,7 @@ bool Maze::collidesWithNonElectricPost(Position pos) const {
 
 ///////////////////////////////////////////////////////////////////
 
-Game::Game() : _gameOver(false), _mazePicked(false) { };
+Game::Game() : _gameOver(false), _mazePicked(false), _aliveRobots(0) { };
 
 ///////////////////////////////////////////////////////////////////
 
@@ -179,8 +179,6 @@ void Game::createMaze(int mazeNumber) { //reads the maze file to find out posts,
     ss >> numRows;
     ss >> sep;
     ss >> numCols;
-
-    std::cout << numRows << " " << numCols << std::endl;
 
     Maze maze = Maze(numCols, numRows, mazeNumber);
     
@@ -460,7 +458,7 @@ void Game::moveRobots() {
         if (nextPos == this->getPlayer().getPosition()) {
             this->getPlayer().die();
             this->_gameOver = true;
-            return; // we can return right away since we lost
+            return; // we can return right away since the player lost
         }
 
         for (auto &otherRobot : this->getRobots()) {
@@ -488,6 +486,8 @@ void Game::moveRobots() {
             if (post.getPosition() == nextPos) {
                 if (!post.isElectric())
                     robot.move(nextPos);
+                if (this->_aliveRobots == 1) // do this to terminate the game once the last robot dies
+                    this->_gameOver = true;
                 robot.die();
                 robot.setState(post.isElectric() ? Robot::DEAD_STATE::DEAD : Robot::DEAD_STATE::STUCK);
                 this->_aliveRobots--;
@@ -499,11 +499,8 @@ void Game::moveRobots() {
         if (continueLoop) continue;
 
         robot.move(nextPos);
-
-        std::cout << "hum" << std::endl;
     }    
 }
-
 
 void Game::movePlayer(Position newPos) {
     
