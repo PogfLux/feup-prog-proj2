@@ -3,6 +3,8 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <fstream>
+#include <cmath>
 
 #include "../include/utils.h"
 #include "../include/leaderboard.h"
@@ -112,11 +114,36 @@ void Leaderboard::readLeaderboardFromFile(const std::string &fileName)
             name += (' ' + tmp);
         }
 
+        Leaderboard::addEntryToLeaderboard({name, score});
     }
 };
 
 void Leaderboard::writeLeaderboardToFile(const std::string &fileName) {
 
+    std::ofstream file;
+
+    file.open(std::string(RESOURCES_PATH) + LEADERBOARDS_PATH + fileName);
+
+    file << "Player";
+    file << std::string(16 - std::string("Player").length(), ' ');
+    file << "- Time";
+    file << '\n';
+
+    file << "----------------------" << '\n';
+
+    for (auto entry : Leaderboard::leaderboardEntries) {
+        file << entry.playerName;
+        file << std::string(16 - getPlayerNameLength(entry.playerName), ' ');
+        file << "- ";
+
+        int numDigitsInScore = (entry.score <= 0) ? 0 : floor(log10(entry.score)) + 1;
+
+        file << std::string(CHARS_PER_SCORE - numDigitsInScore, ' '); // allign scores to the right
+        file << entry.score;
+        file << '\n';
+    }
+
+    file.close();
 };
 
 std::string Leaderboard::getPlayerName() {

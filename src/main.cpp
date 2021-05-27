@@ -155,7 +155,7 @@ int main() {
 
     auto end = std::chrono::high_resolution_clock::now();
 
-    auto time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+    int time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
 
     game.getEntityPositionsInBoard(); // we need to call this to update the internal representation of the board
     game.printBoard();
@@ -166,7 +166,10 @@ int main() {
     
         Node n = {playerName, time};
 
-        
+        Leaderboard::readLeaderboardFromFile(LEADERBOARD_FILE_NAME(game.getMaze().getMazeNumber()));
+        Leaderboard::addEntryToLeaderboard(n);
+        Leaderboard::sortLeaderboard();
+        Leaderboard::writeLeaderboardToFile(LEADERBOARD_FILE_NAME(game.getMaze().getMazeNumber()));
     
     } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
         std::cout << "Oh no, looks like you have lost, try again next time." << std::endl;

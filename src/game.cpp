@@ -264,6 +264,7 @@ char Game::pollPlayerMovement() {
             clearInput();
             clearScreen();
 
+            this->printBoard();
             std::cout << "An error occurred, please repeat the previous action.\n" << std::endl;
             
             
