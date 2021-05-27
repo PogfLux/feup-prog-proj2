@@ -66,7 +66,7 @@ std::vector<Post> Maze::getPosts() const{ return this->_posts; };
 
 bool Maze::collidesWithNonElectricPost(Position pos) const { 
 
-    for (Post p : this->_posts) {
+    for (const Post& p : this->_posts) {
         if (p.isElectric()) continue;
 
         if (p.getPosition() == pos) 
@@ -78,7 +78,7 @@ bool Maze::collidesWithNonElectricPost(Position pos) const {
 
 ///////////////////////////////////////////////////////////////////
 
-Game::Game() : _gameOver(false), _mazePicked(false), _aliveRobots(0) { };
+Game::Game() : _gameOver(false), _mazePicked(false) { };
 
 ///////////////////////////////////////////////////////////////////
 
@@ -111,12 +111,6 @@ bool Game::mazePicked() const {
 void Game::setMaze(Maze maze) {
 
     this->_maze = maze;
-
-}
-
-int Game::getAliveRobotsNum() {
-
-    return this->_aliveRobots;
 
 }
 
@@ -212,8 +206,6 @@ void Game::createMaze(int mazeNumber) { //reads the maze file to find out posts,
                     Robot robot = Robot(pos, isAlive);
                     this->_robots.push_back(robot);
 
-                    this->_aliveRobots += isAlive; // since this var is a bol, it evaluates to either 1 or 0
-
                     break;
                 }
 
@@ -250,11 +242,11 @@ const std::vector<char> Game::validMoves = {'q', 'w', 'e', 'd', 'c', 'x', 'z', '
 
 char Game::pollPlayerMovement() {
     
-    const char ERROR = 0;
+    static const char ERROR = 0; // use this as an error code
 
     char movement = ERROR;
     
-    label: do {
+    do {
         std::cout << "What movement do you want to make?\n-> ";
         std::cin >> movement;
 
@@ -400,7 +392,7 @@ Position Game::getNewPlayerPosition(char playerMove) {
         default:
             return currPos;
     }   
-}
+};
 
 bool Game::isValidPlayerPosition(const Position& newPos) {
 
@@ -428,10 +420,9 @@ bool Game::isValidPlayerPosition(const Position& newPos) {
             return true;
     } */
 
-}
+};
 
 Position Game::getRobotMove(const Robot& robot) {
-    
 
     auto currPos = robot.getPosition();
     auto playerPos = this->getPlayer().getPosition();
@@ -442,7 +433,7 @@ Position Game::getRobotMove(const Robot& robot) {
     dy = (currPos.y < playerPos.y) ? 1 : (currPos.y > playerPos.y) ? -1 : 0;
 
     return {currPos.x + dx, currPos.y + dy};
-}
+};
 
 void Game::moveRobots() {
     
@@ -450,8 +441,6 @@ void Game::moveRobots() {
         if(!robot.isAlive()) continue; // we do not want to move dead robots
         
         bool breakLoop = false, continueLoop = false;
-
-        Position prevPos = robot.getPosition();
 
         Position nextPos = getRobotMove(robot);
 
@@ -474,23 +463,19 @@ void Game::moveRobots() {
                     otherRobot.setState(Robot::DEAD_STATE::STUCK);
                 }
                 continueLoop = true;
-                this->_aliveRobots -= 2;
                 break;
             }
         }
 
         if (continueLoop) continue;
 
-        for (auto post : this->getMaze().getPosts()){
+        for (const auto& post : this->getMaze().getPosts()){
 
             if (post.getPosition() == nextPos) {
                 if (!post.isElectric())
                     robot.move(nextPos);
-                if (this->_aliveRobots == 1) // do this to terminate the game once the last robot dies
-                    this->_gameOver = true;
                 robot.die();
                 robot.setState(post.isElectric() ? Robot::DEAD_STATE::DEAD : Robot::DEAD_STATE::STUCK);
-                this->_aliveRobots--;
                 continueLoop = true;
                 break;
             }
@@ -500,7 +485,7 @@ void Game::moveRobots() {
 
         robot.move(nextPos);
     }    
-}
+};
 
 void Game::movePlayer(Position newPos) {
     
@@ -525,18 +510,13 @@ void Game::movePlayer(Position newPos) {
 
     }
 
-    if (this->_aliveRobots == 0) {
-        this->_gameOver = true;
-        return;
-     } else {
-        for (const auto& robot : this->getRobots()) {
-            if (robot.getPosition() == newPos) {
-                this->getPlayer().die();
-                this->_gameOver = true;
-                return;
-            }
+    for (const auto& robot : this->getRobots()) {
+        if (robot.getPosition() == newPos) {
+            this->getPlayer().die();
+            this->_gameOver = true;
+            return;
         }
     }
 
     this->getPlayer().move(newPos);
-}
+};

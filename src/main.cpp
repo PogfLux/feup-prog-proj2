@@ -160,11 +160,13 @@ int main() {
     game.getEntityPositionsInBoard(); // we need to call this to update the internal representation of the board
     game.printBoard();
 
-    if (game.getAliveRobotsNum() == 0 || game.getPlayer().isAlive()) { // game won 
+    if (game.getPlayer().isAlive()) { // game won 
     
-        //Leaderboard::
+        auto playerName = Leaderboard::getPlayerName();
     
-    
+        Node n = {playerName, time};
+
+        
     
     } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
         std::cout << "Oh no, looks like you have lost, try again next time." << std::endl;

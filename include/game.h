@@ -68,13 +68,11 @@ class Game {
         Position getRobotMove(const Robot& robot);
         void checkGameStatus();
         void movePlayer(Position newPos);
-        int getAliveRobotsNum();
 
     private:
         Player _player;
         Maze _maze;
         std::vector<Robot> _robots;
-        int _aliveRobots;
         bool _gameOver;
         bool _mazePicked;
         std::vector<char> _boardChars; // use this to store the chars when printing the board

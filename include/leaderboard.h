@@ -24,15 +24,6 @@ struct Node {
 };
 
 /**
- * @brief Checks if the score of the left hand side node is less than the score of the right hand side node.
- * 
- * @param lhs the first node
- * @param rhs the second node
- * @return true if the score of the left hand side node is less than the score of the right hand side node, false otherwise
- */
-inline bool operator<(const Node& lhs, const Node& rhs);
-
-/**
  * @brief The leaderboard itself
  * 
  */
@@ -45,6 +36,8 @@ class Leaderboard {
         static void readLeaderboardFromFile(const std::string& fileName);
         static void writeLeaderboardToFile(const std::string& fileName);
         static int  pickLeaderboard();
+        static std::string getPlayerName();
+        static int getPlayerNameLength(const std::string& playerName);
 
     private:
         // the entries of the leaderboard

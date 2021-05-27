@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 bool checkValidMovement();
 
 inline void showRules();
