@@ -264,8 +264,8 @@ char Game::pollPlayerMovement() {
             clearInput();
             clearScreen();
 
+            std::cout << "An error occurred, please repeat the previous action." << std::endl;
             this->printBoard();
-            std::cout << "An error occurred, please repeat the previous action.\n" << std::endl;
             
             
             movement = ERROR;
@@ -278,8 +278,8 @@ char Game::pollPlayerMovement() {
 
         if (std::find(Game::validMoves.begin(), Game::validMoves.end(), movement) == Game::validMoves.end()) { // the move that the user entered is not one of the valid moves
             clearScreen();
+            std::cout << "Invalid input." << std::endl;
             this->printBoard();
-            std::cout << "Invalid input.\n" << std::endl;
             movement = ERROR;
         }
         
