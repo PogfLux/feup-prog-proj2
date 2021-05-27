@@ -9,7 +9,7 @@
 
 #define CHARS_PER_SCORE 4
 
-#define LEADERBOARD_FILE_NAME(number) ("MAZE_" + std::to_string(number) + "_WINNERS.TXT")
+#define LEADERBOARD_FILE_NAME(number) (std::string("MAZE_") + (number < 10 ? "0" : "") + std::to_string(number) + "_WINNERS.TXT")
 
 /**
  * @brief A node in the leaderboard, containing information about a player and its respective score.
