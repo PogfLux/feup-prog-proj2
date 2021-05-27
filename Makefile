@@ -8,6 +8,7 @@
 SRC := ./src
 OBJ := ./build
 BIN := ./bin
+INCLUDE := ./include
 EXECUTABLE_NAME := robots-game
 SOURCE_FILE_EXTENSION := cpp
 
@@ -28,7 +29,7 @@ $(BIN)/$(EXECUTABLE_NAME): $(OBJECTS)
 # compiles every source file into its respective object file
 # $@ = name of rule/recipe target
 # $< = name of first dependency of this recipe
-$(OBJ)/%.o: $(SRC)/%.$(SOURCE_FILE_EXTENSION)
+$(OBJ)/%.o: $(SRC)/%.$(SOURCE_FILE_EXTENSION) $(INCLUDE)/%.h
 	$(CC) -c $< -o $@
 
 # create the build folder if it doesn't already exist
