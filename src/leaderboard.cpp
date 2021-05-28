@@ -125,7 +125,7 @@ void Leaderboard::writeLeaderboardToFile(const std::string &fileName) {
     file.open(std::string(RESOURCES_PATH) + LEADERBOARDS_PATH + fileName);
 
     file << "Player";
-    file << std::string(16 - std::string("Player").length(), ' ');
+    file << std::string(MAX_PLAYER_NAME_LENGTH - std::string("Player").length(), ' ');
     file << "- Time";
     file << '\n';
 
