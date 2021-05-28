@@ -41,6 +41,7 @@ int chooseMenuOption() {
         std::cout << "Menu:" << '\n' << "1) Rules" << '\n' << "2) Play" << '\n' << "3) Leaderboard" << '\n' << "0) Exit" << "\n\n" << "Option: ";
 
         if (!(std::cin >> response) || std::cin.peek() != '\n') { // input is not a number
+            if (std::cin.eof()) { std::cout << std::endl; exit(0); }; // user wants to leave gracefully
             clearInput();
             clearScreen();
             response = -1;
@@ -79,103 +80,132 @@ int main() {
 
     FileManager::setCWD(RESOURCES_PATH);
 
-    Game game;
+    char postGameChoice = 'Y';
+    bool postGameChoiceChosen;
 
-    int mazeNumber;
+    do{
 
-    clearScreen();
-    std::cout << "Robot Maze" << "\n\n";
+        Game game;
 
-    do {
-        int menuChoice = chooseMenuOption();
+        int mazeNumber;
 
-        switch (menuChoice) {
-            case RULES:
-                showRules();
-                break;
+        clearScreen();
+        std::cout << "Robot Maze" << "\n\n";
 
-            case LEADERBOARD: {
-                clearScreen();
+        do {
+            int menuChoice = chooseMenuOption();
 
-                int mazeNumber = Leaderboard::pickLeaderboard();
-                if (mazeNumber != 0) {
-                    Leaderboard::showLeaderboard(mazeNumber);
-                    waitForEnter("Press ENTER to return to main menu...");
+            switch (menuChoice) {
+                case RULES:
+                    showRules();
+                    break;
+
+                case LEADERBOARD: {
+                    clearScreen();
+
+                    int mazeNumber = Leaderboard::pickLeaderboard();
+                    if (mazeNumber != 0) {
+                        Leaderboard::showLeaderboard(mazeNumber);
+                        waitForEnter("Press ENTER to return to main menu...");
+                    }
+
+                    clearScreen();
+                    
+                    break;
                 }
 
+                case PLAY:
+                    clearScreen();
+                    mazeNumber = game.pickMaze();
+                    break;
+
+                case EXIT:
+                    exit(0); // call exit directly
+
+                default:
+                    clearScreen();
+                    std::cout << "\nInvalid option, please input a valid option out of the list.\n" << std::endl;      
+            };
+
+        } while (!game.mazePicked());
+
+        // we only reach this point in the code if we actually picked a maze, so it's safe to parse the maze file
+
+        game.createMaze(mazeNumber);
+
+        clearScreen();
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        while (!game.over()) {
+
+            game.getEntityPositionsInBoard();
+            game.printBoard();
+
+            char playerMove = game.pollPlayerMovement();
+
+            Position newPlayerPos = game.getNewPlayerPosition(playerMove);
+
+            if (!game.isValidPlayerPosition(newPlayerPos)) {
+
                 clearScreen();
-                
-                break;
+                std::cout << "Invalid move, input another move.\n";
+
+            } else {
+                game.movePlayer(newPlayerPos);
+                if(!game.over()) // the player could have killed himself, in which case the game should be over right away
+                    game.moveRobots();
+                    clearScreen();
             }
+        }
 
-            case PLAY:
-                clearScreen();
-                mazeNumber = game.pickMaze();
-                break;
+        auto end = std::chrono::high_resolution_clock::now();
 
-            case EXIT:
-                exit(0); // call exit directly
+        int time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
 
-            default:
-                clearScreen();
-                std::cout << "\nInvalid option, please input a valid option out of the list.\n" << std::endl;      
-        };
-
-    } while (!game.mazePicked());
-
-    // we only reach this point in the code if we actually picked a maze, so it's safe to parse the maze file
-
-    game.createMaze(mazeNumber);
-
-    clearScreen();
-
-    auto start = std::chrono::high_resolution_clock::now();
-
-    while (!game.over()) {
-
-        game.getEntityPositionsInBoard();
+        game.getEntityPositionsInBoard(); // we need to call this to update the internal representation of the board
         game.printBoard();
 
-        char playerMove = game.pollPlayerMovement();
+        if (game.getPlayer().isAlive()) { // game won 
+        
+            auto playerName = Leaderboard::getPlayerName();
+        
+            Node n = {playerName, time};
 
-        Position newPlayerPos = game.getNewPlayerPosition(playerMove);
-
-        if (!game.isValidPlayerPosition(newPlayerPos)) {
-
-            clearScreen();
-            std::cout << "Invalid move, input another move.\n";
-
-        } else {
-            game.movePlayer(newPlayerPos);
-            if(!game.over()) // the player could have killed himself, in which case the game should be over right away
-                game.moveRobots();
-                clearScreen();
+            Leaderboard::readLeaderboardFromFile(LEADERBOARD_FILE_NAME(game.getMaze().getMazeNumber()));
+            Leaderboard::addEntryToLeaderboard(n);
+            Leaderboard::sortLeaderboard();
+            Leaderboard::writeLeaderboardToFile(LEADERBOARD_FILE_NAME(game.getMaze().getMazeNumber()));
+        
+        } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
+            std::cout << '\n';
+            std::cout << "Oh no, looks like you have lost, try again next time." << std::endl;
         }
-    }
 
-    auto end = std::chrono::high_resolution_clock::now();
+        waitForEnter();
+        clearScreen();
+        do {
+            std::cout << "Do you wish to play again? (Y/N)\n";
+            std::cin >> postGameChoice;
 
-    int time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+            if (std::cin.eof()) { exit(0); };
 
-    game.getEntityPositionsInBoard(); // we need to call this to update the internal representation of the board
-    game.printBoard();
+            postGameChoice = tolower(postGameChoice);
+            clearInput();
 
-    if (game.getPlayer().isAlive()) { // game won 
-    
-        auto playerName = Leaderboard::getPlayerName();
-    
-        Node n = {playerName, time};
+            switch(postGameChoice) {
+                case 'y': postGameChoiceChosen = true;
+                          break;
+                          
+                case 'n': exit(0);
 
-        Leaderboard::readLeaderboardFromFile(LEADERBOARD_FILE_NAME(game.getMaze().getMazeNumber()));
-        Leaderboard::addEntryToLeaderboard(n);
-        Leaderboard::sortLeaderboard();
-        Leaderboard::writeLeaderboardToFile(LEADERBOARD_FILE_NAME(game.getMaze().getMazeNumber()));
-    
-    } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
-        std::cout << '\n';
-        std::cout << "Oh no, looks like you have lost, try again next time." << std::endl;
-    }
-
+                default: postGameChoiceChosen = false;
+                         clearScreen();
+                         std::cout << "Invalid input.\n" << std::endl;
+            }
+        } while(!postGameChoiceChosen);
+        
+    } while(postGameChoice != 'n');
     return 0;
 }
 
