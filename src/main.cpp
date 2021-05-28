@@ -98,6 +98,8 @@ int main() {
             switch (menuChoice) {
                 case RULES:
                     showRules();
+                    waitForEnter();
+                    clearScreen();
                     break;
 
                 case LEADERBOARD: {
