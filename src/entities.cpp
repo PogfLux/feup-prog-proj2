@@ -52,7 +52,7 @@ bool Robot::isAlive() const {
 
 Player::Player() { };
 
-Player::Player(Position pos, bool alive): _pos(pos), _alive(alive) {};
+Player::Player(Position pos): _pos(pos), _alive(true) {};
 
 void Player::die() {
     this->_alive = false;

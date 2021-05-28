@@ -64,7 +64,7 @@ std::vector<Exit> Maze::getExits() const{ return this->_exits; };
 
 std::vector<Post> Maze::getPosts() const{ return this->_posts; };
 
-bool Maze::collidesWithNonElectricPost(Position pos) const { 
+bool Maze::collidesWithNonElectricPost(const Position& pos) const { 
 
     for (const Post& p : this->_posts) {
         if (p.isElectric()) continue;
@@ -82,7 +82,7 @@ Game::Game() : _gameOver(false), _mazePicked(false) { };
 
 ///////////////////////////////////////////////////////////////////
 
-Player& Game::getPlayer() {
+Player Game::getPlayer() {
 
     return _player;
 
@@ -108,7 +108,7 @@ bool Game::mazePicked() const {
 
 };
 
-void Game::setMaze(Maze maze) {
+void Game::setMaze(const Maze& maze) {
 
     this->_maze = maze;
 
@@ -213,7 +213,7 @@ void Game::createMaze(int mazeNumber) { //reads the maze file to find out posts,
 
                     Position pos = {j, i};
 
-                    this->_player = Player(pos, true); // the player always starts out alive.
+                    this->_player = Player(pos); // the player always starts out alive.
                     break;
                 }
 
@@ -292,7 +292,7 @@ void Game::getEntityPositionsInBoard() {
 
     std::vector<char> boardChars;
 
-    auto player = this->getPlayer();
+    auto player = this->_player;
     auto robots = this->getRobots();
     auto maze = this->getMaze();
     auto exits = maze.getExits();
@@ -361,7 +361,7 @@ void Game::printBoard() {
 
 Position Game::getNewPlayerPosition(char playerMove) {
 
-    Position currPos = this->getPlayer().getPosition();
+    Position currPos = this->_player.getPosition();
 
     switch (playerMove) {
 
@@ -398,7 +398,7 @@ Position Game::getNewPlayerPosition(char playerMove) {
 bool Game::isValidPlayerPosition(const Position& newPos) {
 
     for (const Robot& robot : this->getRobots()) {
-        if (robot.isAlive()) continue; 
+        if (robot.isAlive()) continue; // we nly want t check deade robots in this loop
 
         Position robotPos = robot.getPosition();
         
@@ -426,7 +426,7 @@ bool Game::isValidPlayerPosition(const Position& newPos) {
 Position Game::getRobotMove(const Robot& robot) {
 
     auto currPos = robot.getPosition();
-    auto playerPos = this->getPlayer().getPosition();
+    auto playerPos = this->_player.getPosition();
 
     int dx, dy; // the change of movement in the robots
 
@@ -445,8 +445,8 @@ void Game::moveRobots() {
 
         Position nextPos = getRobotMove(robot);
 
-        if (nextPos == this->getPlayer().getPosition()) {
-            this->getPlayer().die();
+        if (nextPos == this->_player.getPosition()) {
+            this->_player.die();
             this->_gameOver = true;
             return; // we can return right away since the player lost
         }
@@ -467,7 +467,7 @@ void Game::moveRobots() {
                 break;
             }
         }
-
+        
         if (continueLoop) continue;
 
         for (const auto& post : this->getMaze().getPosts()){
@@ -488,36 +488,33 @@ void Game::moveRobots() {
     }    
 };
 
-void Game::movePlayer(Position newPos) {
+void Game::movePlayer(const Position& newPos) {
     
-    for (const auto& exit : this->getMaze().getExits()){
-
+    for (const auto& exit : this->getMaze().getExits())
         if (exit == newPos){
-            this->getPlayer().move(newPos);
+            this->_player.move(newPos);
             this->_gameOver = true;
             return;
         }
-    }
 
     for (const auto& post : this->getMaze().getPosts()) {
 
         if (!post.isElectric()) continue;
 
         if (post.getPosition() == newPos) {
-            this->getPlayer().die();
+            this->_player.die();
             this->_gameOver = true;
             return;
         }
 
     }
 
-    for (const auto& robot : this->getRobots()) {
+    for (const auto& robot : this->getRobots())
         if (robot.getPosition() == newPos) {
-            this->getPlayer().die();
+            this->_player.die();
             this->_gameOver = true;
             return;
         }
-    }
 
-    this->getPlayer().move(newPos);
+    this->_player.move(newPos);
 };
