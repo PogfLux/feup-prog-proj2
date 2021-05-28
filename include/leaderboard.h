@@ -30,13 +30,60 @@ struct Node {
 class Leaderboard {
 
     public:
+        /**
+         * @brief Displays a maze's leaderboard.
+         * 
+         * @param mazeNumber the number of the maze whose leaderboard we want to check.
+         */
         static void showLeaderboard(const int& mazeNumber);
+
+        /**
+         * @brief Sorts the leaderboard, according to scores.
+         * 
+         */
         static void sortLeaderboard();
+
+        /**
+         * @brief Inserts a player's name and his respective score to the leaderboard.
+         * 
+         * @param newEntry the player's name and score.
+         */
         static void addEntryToLeaderboard(Node newEntry);
+
+        /**
+         * @brief Parses the leaderboard object from a leaderboard file.
+         * 
+         * @param fileName the name of the file containing the leaderboard.
+         */
         static void readLeaderboardFromFile(const std::string& fileName);
+
+        /**
+         * @brief Writes the contents of the leaderboard object to the respective file
+         * 
+         * @param fileName the name of the file to which we will write the leaderboard
+         */
         static void writeLeaderboardToFile(const std::string& fileName);
-        static int  pickLeaderboard();
+
+        /**
+         * @brief Choose which maze's leaderboard you want to check
+         * 
+         * @return the number of the maze's leaderboard
+         */
+        static int pickLeaderboard();
+
+        /**
+         * @brief Get the Player Name object.
+         * 
+         * @return the name of the player.
+         */
         static std::string getPlayerName();
+
+        /**
+         * @brief Get the Player Name Length
+         * 
+         * @param playerName the name of the player.
+         * @return the length of the player's name.
+         */
         static int getPlayerNameLength(const std::string& playerName);
 
     private:
@@ -72,4 +119,3 @@ class Leaderboard {
  * @param fileName the name of the file in which to store the leaderboard
  * @param leaderboard the leaderboard object
  */
-//void writeLeaderboardToFile(const std::string& fileName, const Leaderboard& leaderboard);

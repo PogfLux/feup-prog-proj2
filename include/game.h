@@ -16,10 +16,40 @@ using Exit = Position;
 class Post {
     
     public:
+        /**
+         * @brief Construct a new Post object.
+         * 
+         */
         Post();
+
+        /**
+         * @brief Construct a new Post object.
+         * 
+         * @param pos the post's position.
+         * @param electric whether the post is electric or not.
+         */
         Post(Position pos, bool electric);
+
+        /**
+         * @brief Set a post to either electric or not electric.
+         * 
+         * @param newState the state of the post.
+         */
         void setElectric(bool newState);
+
+        /**
+         * @brief Get the Position of an object.
+         * 
+         * @return the object's position.
+         */
         Position getPosition() const;
+
+        /**
+         * @brief Check if a Post is electric or not.
+         * 
+         * @return true if it's electric.
+         * @return false if it's not electric.
+         */
         bool isElectric() const;
 
     private:
