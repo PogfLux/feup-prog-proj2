@@ -436,13 +436,46 @@ Position Game::getRobotMove(const Robot& robot) {
     return {currPos.x + dx, currPos.y + dy};
 };
 
+bool Game::robotToRobotCollision(Robot& robot, Position nextPos) {
+
+    for (auto& otherRobot : this->getRobots()) {
+        if (otherRobot == robot) continue; // no checking ourselves twice
+
+        if (otherRobot.getPosition() == nextPos) {
+
+            robot.move(nextPos);
+            robot.die(); // kill the robot that moved
+            robot.setState(Robot::DEAD_STATE::STUCK);
+            if (otherRobot.isAlive()) {
+                otherRobot.die(); // kill the other robot and stop checking for robots to kill
+                otherRobot.setState(Robot::DEAD_STATE::STUCK);
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Game::robotToMazeCollision(Robot& robot, Position nextPos) {
+
+    for (const auto& post : this->getMaze().getPosts()){
+
+        if (post.getPosition() == nextPos) {
+            if (!post.isElectric())
+                robot.move(nextPos);
+            robot.die();
+            robot.setState(post.isElectric() ? Robot::DEAD_STATE::DEAD : Robot::DEAD_STATE::STUCK);
+            return true;
+        }
+    }
+    return false;
+};
+
 void Game::moveRobots() {
     
     for (auto &robot : this->getRobots()) {
         if(!robot.isAlive()) continue; // we do not want to move dead robots
         
-        bool breakLoop = false, continueLoop = false;
-
         Position nextPos = getRobotMove(robot);
 
         if (nextPos == this->_player.getPosition()) {
@@ -450,39 +483,10 @@ void Game::moveRobots() {
             this->_gameOver = true;
             return; // we can return right away since the player lost
         }
-
-        for (auto &otherRobot : this->getRobots()) {
-            if (otherRobot == robot) continue; // no checking ourselves twice
-
-            if (otherRobot.getPosition() == nextPos) {
-
-                robot.move(nextPos);
-                robot.die(); // kill the robot that moved
-                robot.setState(Robot::DEAD_STATE::STUCK);
-                if (otherRobot.isAlive()) {
-                    otherRobot.die(); // kill the other robot and stop checking for robots to kill
-                    otherRobot.setState(Robot::DEAD_STATE::STUCK);
-                }
-                continueLoop = true;
-                break;
-            }
-        }
         
-        if (continueLoop) continue;
-
-        for (const auto& post : this->getMaze().getPosts()){
-
-            if (post.getPosition() == nextPos) {
-                if (!post.isElectric())
-                    robot.move(nextPos);
-                robot.die();
-                robot.setState(post.isElectric() ? Robot::DEAD_STATE::DEAD : Robot::DEAD_STATE::STUCK);
-                continueLoop = true;
-                break;
-            }
-        }
+        if (this->robotToRobotCollision(robot, nextPos)) continue;
         
-        if (continueLoop) continue;
+        if (this->robotToMazeCollision(robot, nextPos)) continue;
 
         robot.move(nextPos);
     }    
@@ -506,7 +510,6 @@ void Game::movePlayer(const Position& newPos) {
             this->_gameOver = true;
             return;
         }
-
     }
 
     for (const auto& robot : this->getRobots())
