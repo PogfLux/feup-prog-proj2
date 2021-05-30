@@ -180,6 +180,11 @@ int main() {
             Leaderboard::addEntryToLeaderboard(n);
             Leaderboard::sortLeaderboard();
             Leaderboard::writeLeaderboardToFile(LEADERBOARD_FILE_NAME(game.getMaze().getMazeNumber()));
+
+            waitForEnter();
+            clearScreen();
+
+            Leaderboard::showLeaderboard(game.getMaze().getMazeNumber());
         
         } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
             std::cout << '\n';
