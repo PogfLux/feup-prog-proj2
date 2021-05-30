@@ -1,7 +1,9 @@
+//T10_G01
+
 #include <iostream>
 #include <string>
 
-#include "../include/utils.h"
+#include "./utils.h"
 
 void clearScreen() {std::cout << std::string(500, '\n') << std::endl;};
 

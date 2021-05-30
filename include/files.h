@@ -5,11 +5,11 @@
 #include <string>
 #include <vector>
 
-#define RESOURCES_PATH "./resources/"
+#define RESOURCES_PATH "./"
 
-#define LEADERBOARDS_PATH "leaderboards/"
+#define LEADERBOARDS_PATH ""
 
-#define MAZES_PATH "mazes/"
+#define MAZES_PATH ""
 
 class FileManager {
 

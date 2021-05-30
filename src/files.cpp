@@ -1,8 +1,10 @@
+//T10_G01
+
 #include <fstream>
 #include <iostream>
 #include <vector>
 
-#include "../include/files.h"
+#include "./files.h"
 
 std::string FileManager::cwd; // this line is needed so that cwd is not undefined
 

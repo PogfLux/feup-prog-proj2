@@ -1,3 +1,5 @@
+//T10_G01
+
 /**
  * @file game.cpp
  * @author your name (you@domain.com)
@@ -13,10 +15,10 @@
 #include <sstream>
 #include <algorithm>
 
-#include "../include/utils.h"
-#include "../include/game.h"
-#include "../include/files.h"
-#include "../include/entities.h"
+#include "./utils.h"
+#include "./game.h"
+#include "./files.h"
+#include "./entities.h"
 
 Post::Post(Position pos, bool electric) : _pos(pos), _electric(electric) { };
 

@@ -1,3 +1,5 @@
+//T10_G01
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,9 +8,9 @@
 #include <fstream>
 #include <cmath>
 
-#include "../include/utils.h"
-#include "../include/leaderboard.h"
-#include "../include/files.h"
+#include "./utils.h"
+#include "./leaderboard.h"
+#include "./files.h"
 
 std::vector<Node> Leaderboard::leaderboardEntries = std::vector<Node>();
 

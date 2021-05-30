@@ -1,3 +1,5 @@
+//T10_G01
+
 #include <iostream>
 #include <string> 
 #include <vector>
@@ -7,11 +9,11 @@
 #include <algorithm>
 #include <cmath>
 
-#include "../include/utils.h"
-#include "../include/main.h"
-#include "../include/game.h"
-#include "../include/leaderboard.h"
-#include "../include/files.h"
+#include "./utils.h"
+#include "./main.h"
+#include "./game.h"
+#include "./leaderboard.h"
+#include "./files.h"
 
 enum GameMenuOption {
     EXIT, RULES, PLAY, LEADERBOARD

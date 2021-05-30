@@ -1,3 +1,5 @@
+//T10_G01
+
 /**
  * @file entities.cpp
  * @author Nuno Pereira (up202007865@fe.up.pt)
@@ -10,7 +12,7 @@
  * 
  */
 
-#include "../include/entities.h"
+#include "./entities.h"
 
 Robot::Robot() { };
 
