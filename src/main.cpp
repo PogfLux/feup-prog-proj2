@@ -186,7 +186,7 @@ int main() {
 
             Leaderboard::showLeaderboard(game.getMaze().getMazeNumber());
         
-        } else { //dumbass lost the easiest game in the world, he must be as retarded as Peras
+        } else { //you lost the easiest game in the world
             std::cout << '\n';
             std::cout << "Oh no, looks like you have lost, try again next time." << std::endl;
         }
